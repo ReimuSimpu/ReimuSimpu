@@ -1,16 +1,28 @@
-## Hi there 👋
+<h1 align="center">🦛 LordHippo 🦛</h1>
+<h2 align="center">PS99 Scripter <a href="https://discord.com/invite/VzkvWUjJVe">HippoHaven</a>
 
-<!--
-**ReimuSimpu/ReimuSimpu** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+<br>
+<br>
 
-Here are some ideas to get you started:
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Exunys.Exunys&left_color=red&right_color=purple) 
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+</h2>
+
+<h2 align = "center">
+  
+![Stats](https://github-readme-stats.vercel.app/api/?username=ReimuSimpu&show_icons=true&title_color=fff&icon_color=79ff97&text_color=9f9f9f&bg_color=151515&count_private=true&include_all_commits=true&custom_title=LordHippo's%20Statistics) ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs?username=ReimuSimpu&layout=compact&title_color=fff&icon_color=79ff97&text_color=9f9f9f&bg_color=151515&border_radius=10&hide=css&custom_title=LordHippo's%20Most%20Used%20Languages)
+
+</h2>
+
+<h2 align = "center"> Other Accounts
+  
+<br>
+<br>
+
+[YouTube](https://www.youtube.com/@Lord_Hippo)
+[Discord](https://discord.com/users/618580498251382824)
+</h2>
+
+<br>
+ 
+</details>
