@@ -8,8 +8,9 @@
 <br>
 
 <p align="center">
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=Exunys.Exunys&left_color=red&right_color=purple" alt="Visitors"/>
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=ReimuSimpu.ReimuSimpu&left_color=red&right_color=purple" alt="Visitors"/>
 </p>
+
 
 <h2 align="center">
   <img src="https://github-readme-stats.vercel.app/api/?username=ReimuSimpu&show_icons=true&title_color=fff&icon_color=79ff97&text_color=9f9f9f&bg_color=151515&count_private=true&include_all_commits=true&custom_title=LordHippo's%20Statistics" alt="Stats"/>
