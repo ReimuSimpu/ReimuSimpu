@@ -20,6 +20,7 @@
 <h2 align="center">Other Accounts</h2>
 
 <p align="center">
-  <a href="https://www.youtube.com/@Lord_Hippo">YouTube</a> • 
+  <a href="https://www.youtube.com/@Lord_Hippo">YouTube</a><br>
   <a href="https://discord.com/users/618580498251382824">Discord</a>
 </p>
+
