@@ -4,7 +4,7 @@
 <br>
 <br>
 
-![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Exunys.Exunys&left_color=red&right_color=purple) 
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=ReimuSimpu.ReimuSimpu&left_color=red&right_color=purple) 
 
 </h2>
 
