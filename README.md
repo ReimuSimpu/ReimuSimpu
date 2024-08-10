@@ -1,28 +1,24 @@
 <h1 align="center">🦛 LordHippo 🦛</h1>
-<h2 align="center">PS99 Scripter <a href="https://discord.com/invite/VzkvWUjJVe">HippoHaven</a>
-
-<br>
-<br>
-
-![Visitors](https://visitor-badge.laobi.icu/badge?page_id=ReimuSimpu.ReimuSimpu&left_color=red&right_color=purple) 
-
-</h2>
-
-<h2 align = "center">
-  
-![Stats](https://github-readme-stats.vercel.app/api/?username=ReimuSimpu&show_icons=true&title_color=fff&icon_color=79ff97&text_color=9f9f9f&bg_color=151515&count_private=true&include_all_commits=true&custom_title=LordHippo's%20Statistics) ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs?username=ReimuSimpu&layout=compact&title_color=fff&icon_color=79ff97&text_color=9f9f9f&bg_color=151515&border_radius=10&hide=css&custom_title=LordHippo's%20Most%20Used%20Languages)
-
-</h2>
-
-<h2 align = "center"> Other Accounts
-  
-<br>
-<br>
-
-[YouTube](https://www.youtube.com/@Lord_Hippo)
-[Discord](https://discord.com/users/618580498251382824)
+<h2 align="center">
+  PS99 Scripter 
+  <br>
+  <a href="https://discord.com/invite/VzkvWUjJVe">HippoHaven</a>
 </h2>
 
 <br>
- 
-</details>
+
+<p align="center">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=Exunys.Exunys&left_color=red&right_color=purple" alt="Visitors"/>
+</p>
+
+<h2 align="center">
+  <img src="https://github-readme-stats.vercel.app/api/?username=ReimuSimpu&show_icons=true&title_color=fff&icon_color=79ff97&text_color=9f9f9f&bg_color=151515&count_private=true&include_all_commits=true&custom_title=LordHippo's%20Statistics" alt="Stats"/>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs?username=ReimuSimpu&layout=compact&title_color=fff&icon_color=79ff97&text_color=9f9f9f&bg_color=151515&border_radius=10&hide=css&custom_title=LordHippo's%20Most%20Used%20Languages" alt="Top Langs"/>
+</h2>
+
+<h2 align="center">Other Accounts</h2>
+
+<p align="center">
+  <a href="https://www.youtube.com/@Lord_Hippo">YouTube</a> • 
+  <a href="https://discord.com/users/618580498251382824">Discord</a>
+</p>
