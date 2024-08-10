@@ -1,9 +1,8 @@
 <h1 align="center">🦛 LordHippo 🦛</h1>
 <h2 align="center">
-  PS99 Scripter 
-  <br>
-  <a href="https://discord.com/invite/VzkvWUjJVe">HippoHaven</a>
+  PS99 Scripter <a href="https://discord.com/invite/VzkvWUjJVe">• HippoHaven</a>
 </h2>
+
 
 <br>
 
