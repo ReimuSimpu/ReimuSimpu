@@ -15,7 +15,6 @@ pcall(function() if not CFG["Optamize+"]["CoreGui"] then table.insert(entities, 
 --########################################################
 ----------------------- Workspace ------------------------
 --########################################################
-workspace.Gravity = 0
 
 print("Useless Workspace")
 for _, v in ipairs(Delete_Workspace) do
