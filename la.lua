@@ -1,35 +1,135 @@
-local User = {
-    ["NvOugWQqQGMzfCIPRtcULzXpCXikcPIT"] = "1232071639844524054",
-    ["DUuubAsavoPcnyQOgBOLcCqrfNCeEfAG"] = "1179062967417962568",
-    ["RNGLzksFRLAfSfkFkzLtLhGLpwCrBQBS"] = "540224229900156938",
-    ["knavJBZImQgXOtrxHqMuRpkAWYeIAmkr"] = "1262799260324200490",
-    ["mLorFpRbWfHXQfOAnvkaLqTDibNGpXEx"] = "1265801622412333207",
-    ["iwaZOltrxMBOJabABnbmkfxPGQjgFYwk"] = "667065941703524367",
-    ["LXQpaiyryMwbwPcZNzMxNqGYFCHRHIuq"] = "278707419536687105",
-    ["JfyFvjVQxOdLRzJwHxeTKGwmxETyEVnv"] = "618580498251382824",
-    ["xsvhIEeCvgaCmCCXIqKYmfHelQzPybPZ"] = "1205945127369969774",
-    ["EctbGlAIfRcKmbsWTpPVpaSNRkPFMzgT"] = "1093694508975280208",
-    ["OINkOdOmehmdyoECFByiUqZzoUAZWCTc"] = "832029193813360661",
-    ["rfsFRaKQRyQTwGfDuaIXyAlZxlUlMTTj"] = "957324855353704589",
-    ["qjfaVFSFSKmYNelltLhOMGFtmfQiuRxY"] = "865995061224276019",
-    ["zWONSZzJtmMsliVjRdTmWkUaNjdEMRvz"] = "1083703080643727361",
-    ["vCMuVwUCBRSdVpoHVYQOnfiQoXcwNNdf"] = "156133706224893952",
-    ["ckKQyhtBkgjDRtqeHTmpyrKquITLkrFH"] = "802386622003150889",
-    ["zkowwIhHuitmHDFgeqGSXrSGZrsrNzyD"] = "",
-    ["dEpShyJEhpYQCmCmQnHfEZNMxaqgqCiW"] = "860220598378561546",
-    ["vpLXdhnukwQTqCJZKtxCGoiNdxbQKahz"] = "707216077179977780",
-    ["bnilEFHisWjmbuQjnmKVQcxeyZjqSCFM"] = "832688400796221543",
-    ["KmNPBqiHjQeUjzneqXNCJYseQJaknoxv"] = "1179822707811037265",
-    ["cGDYqYzvPsqNhNbehGBlEUSANxbMKTjB"] = "1153001547865784420",
-    ["jyQHPzyLVjsWBfFlLssuDcONAKjqXWJF"] = "1266295616888115237",
-    ["THITcfwgwEpSYDHKMmLEJgBxdZuzBbWT"] = "155149108183695360",
-    ["vLacmfmJBUfhbcFSlKMIRIQPxybkzTJD"] = "1121407344773959744",
-    ["hivMSRJOWerSewqhmtbCXDeFklSozvyP"] = "845591796263419914",
-    ["UFzZcCCxUbOQIgPmaDrqVpbPVCEXFfao"] = "999046489244438538",
-    ["hXkziQAYsURncIKKdBtvAKrDXWtjzbfP"] = "474925167886336001",
-    ["HWFswtuLPaWtEGNkkmoCCBnFfJHTMbcn"] = "712263384858624050",
-    ["sgvHGHdBvcUxtwbpVYlRPIEzozROUKvb"] = "852920276730511421",
-    ["jBZGqXsdlXwfXloogRruAojyXRYvIErq"] = "1226384700051030126",
-    ["oswkmeYiFpDlXSpnoGcUsXPRtzqzQdjq"] = "812610536473755658",
-}
-return User
+local LocalPlayer = game.Players.LocalPlayer
+local HRP = LocalPlayer.Character.HumanoidRootPart
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Terrain = workspace:FindFirstChildOfClass("Terrain")
+local Lighting = game:GetService("Lighting")
+
+Terrain.WaterWaveSize, Terrain.WaterWaveSpeed, Terrain.WaterReflectance, Terrain.WaterTransparency = 0, 0, 0, 0
+Lighting.GlobalShadows, Lighting.FogEnd = false, 9e9
+
+local Delete_Workspace = { "Map" }
+local entities = { "Stats", "Chat", "Debris" }
+local ThingsToRemove = { "Flags", "Breakables", "Ski Chairs", "ShinyRelics", "BalloonGifts", "Eggs", "CustomEggs", "__FAKE_GROUND" }
+pcall(function() if not CFG["Optamize+"]["CoreGui"] then table.insert(entities, "CoreGui") end end)
+
+--########################################################
+----------------------- Workspace ------------------------
+--########################################################
+workspace.Gravity = 0
+
+print("Useless Workspace")
+for _, v in ipairs(Delete_Workspace) do
+    pcall(function() workspace[v]:Destroy() end)
+end
+
+print("Workspace Children")
+for _, v in ipairs(workspace:GetChildren()) do task.wait(0.25)
+    if not (v.Name == "__THINGS" or v.Name == "__DEBRIS" or v.Name == LocalPlayer.Name or v.Name == "Camera" or v.Name == "CurrentCamera" or v.Name == "Terrain" or v.Name == "Border") then
+        v.Parent = ReplicatedStorage
+    end
+end
+
+print("Workspace Connect")
+workspace.DescendantAdded:Connect(function(child)
+    if child:IsA("ForceField") or child:IsA("Sparkles") or child:IsA("Smoke") or child:IsA("Fire") then
+        game:GetService("RunService").Heartbeat:Wait()
+        child:Destroy()
+    end
+end)
+
+--########################################################
+------------------------ Things --------------------------
+--########################################################
+
+print("Things Move/Delete")
+for _, v in ipairs(workspace.__THINGS:GetChildren()) do
+    if table.find(ThingsToRemove, v.Name) then
+        for _, child in ipairs(v:GetChildren()) do
+            child:Destroy()
+        end
+    elseif not (v.Name == "Orbs" or v.Name == "__INSTANCE_CONTAINER" or v.Name == "Lootbags") then
+        v.Parent = ReplicatedStorage
+    end
+end
+
+--########################################################
+------------------------- Game ---------------------------
+--########################################################
+
+print("Service Deletion")
+for _, entity in ipairs(entities) do
+    pcall(function()
+        for _, v in ipairs(game:GetService(entity):GetDescendants()) do
+            pcall(function() v:Destroy() end)
+        end
+    end)
+end
+
+--########################################################
+-------------------------- All ---------------------------
+--########################################################
+
+LocalPlayer.CharacterAdded:Connect(function(i)
+    Character = i
+    HRP = Character:WaitForChild("HumanoidRootPart")
+    HRP.Anchored = true
+end)
+
+task.spawn(function()
+    while true do
+        print("Player Delete")
+        for i, v in game.Players:GetPlayers() do
+            if v ~= game.Players.LocalPlayer then
+                pcall(function()
+                    v.Character:Destroy()
+                end)
+            end
+        end
+        task.wait(30)
+    end
+end)
+
+pcall(function()
+    if not CFG["Optamize+"]["Show Tap Gui"] then
+        print("TG")
+        LocalPlayer.PlayerGui:WaitForChild("_INSTANCES"):WaitForChild("FishingGame"):GetPropertyChangedSignal("Enabled"):Connect(function()
+            pcall(function() LocalPlayer.PlayerGui:WaitForChild("_INSTANCES"):WaitForChild("FishingGame").Enabled = false end)
+        end)
+    end
+end)
+
+print("EUI")
+for _, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui:GetDescendants()) do
+    pcall(function() v.Enabled = false end)
+end
+--[[
+print("DPS")
+for _,v in pairs(game:GetService("Players").LocalPlayer.PlayerScripts:GetChildren()) do
+    pcall(function() v:Destroy() end)
+end
+]]
+
+print("pv")
+for _, v in pairs(LocalPlayer.Character:GetDescendants()) do
+    pcall(function() v.Transparency = 1 end)
+end
+
+print("Workspace Descendants")
+for _, v in ipairs(workspace:GetDescendants()) do
+    if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("MeshPart") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
+        v.Material = Enum.Material.Plastic
+        v.Reflectance = 0
+    elseif v:IsA("Decal") then
+        v.Transparency = 1
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
+    end
+end
+
+print("Active Descendants")
+for _, v in pairs(workspace.__THINGS.__INSTANCE_CONTAINER.Active:GetDescendants()) do
+    pcall(function() v.Transparency = 1 end)
+end
