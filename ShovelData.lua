@@ -10,7 +10,7 @@ local SHOVEL_DATA = {
     ['Emerald Shovel'] = { Next_Shovel = 'Sapphire Shovel', Cost_Of_Next = 4000000, Rank_Current_Shovel = 8, Icon = 'rbxassetid://16039332703', ColorText = Color3.new(1, 1, 1) },
     ['Sapphire Shovel'] = { Next_Shovel = 'Amethyst Shovel', Cost_Of_Next = 12500000, Rank_Current_Shovel = 9, Icon = 'rbxassetid://16039332265', ColorText = Color3.new(1, 1, 1) },
     ['Amethyst Shovel'] = { Next_Shovel = 'NO NEXT SHOVEL', Cost_Of_Next = math.huge, Rank_Current_Shovel = 10, Icon = 'rbxassetid://16039332930', ColorText = Color3.new(1, 1, 1) },
-    ['Diamond Shovel'] = { Next_Shovel = 'NO NEXT SHOVEL', Cost_Of_Next = math.huge, Rank_Current_Shovel = 11, Icon = 'rbxassetid://16039332788', ColorText = Color3.new(1, 1, 1) },
+    ['Diamond Shovel'] = { Display_Name = "Niggerite Shovel", Next_Shovel = 'NO NEXT SHOVEL', Cost_Of_Next = math.huge, Rank_Current_Shovel = 11, Icon = 'rbxassetid://16039332788', ColorText = Color3.new(1, 1, 1) },
 }
 
 return SHOVEL_DATA
