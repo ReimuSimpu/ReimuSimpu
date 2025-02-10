@@ -22,6 +22,13 @@ DestroyChildren(workspace.__THINGS, {"CustomEggs", "Islands", "Tycoons"})
 DestroyChildren(LocalPlayer.PlayerScripts.Scripts.Game, {"Egg Opening Frontend"})
 DestroyChildren(LocalPlayer.PlayerScripts.Scripts, {"Game"})
 DestroyChildren(LocalPlayer.PlayerGui, {"ScreenGui"})
-for i,v in pairs(game.GetDescendants()) do HandleWorkspace(v) end
-game.DescendantAdded:Connect(function(v) HandleWorkspace(v) end)
+
+for i, v in ipairs(game:GetDescendants()) do 
+    HandleWorkspace(v) 
+end
+
+game.DescendantAdded:Connect(function(v) 
+    HandleWorkspace(v) 
+end)
+
 game:GetService("RunService"):Set3dRenderingEnabled(true)
