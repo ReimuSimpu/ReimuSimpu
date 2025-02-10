@@ -43,3 +43,5 @@ workspace.DescendantAdded:Connect(function(v)
     RunService.Heartbeat:Wait() 
     HandleWorkspace(v)
 end)
+
+game:GetService("RunService"):Set3dRenderingEnabled(false)
