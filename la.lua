@@ -30,11 +30,11 @@ local HandleWorkspace = function(v)
     pcall(function() v.Material = Enum.Material.Plastic end)
 end
 
-for i, v in ipairs(game:GetDescendants()) do 
+for i, v in ipairs(game.workspace:GetDescendants()) do 
     HandleWorkspace(v) 
 end
 
-game.DescendantAdded:Connect(function(v) 
+game.workspace.DescendantAdded:Connect(function(v) 
     HandleWorkspace(v) 
 end)
 
