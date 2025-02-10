@@ -10,10 +10,8 @@ end
 mod.HandleWorkspace = function(v)
     pcall(function() v.Transparency = 1 end)
     pcall(function() v.Enabled = false end)
-    pcall(function() v.Visible = false end)
     pcall(function() v.MeshId = "" end)
     pcall(function() v.TextureID = "" end)
-    pcall(function() v.Massless = true end)
     pcall(function() v.Material = Enum.Material.Plastic end)
 end
 return mod
