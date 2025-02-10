@@ -1,3 +1,5 @@
+local LocalPlayer = game:GetService("Players").LocalPlayer
+
 local DestroyChildren = function(Path, Excludes)
     for i,v in pairs(Path:GetChildren()) do
         if not table.find(Excludes, v.Name) then
