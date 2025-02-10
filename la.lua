@@ -19,7 +19,7 @@ local HandleWorkspace = function(v)
 end
 
 DestroyChildren(workspace, {"Terrain", "Camera", "Map", "Map2", "Map3", "__THINGS", LocalPlayer.Name})
-DestroyChildren(workspace.__THINGS, {"Eggs", "__INSTANCE_CONTAINER", "Islands"})
+DestroyChildren(workspace.__THINGS, {"CustomEggs", "Eggs", "__INSTANCE_CONTAINER", "Islands"})
 DestroyChildren(game:GetService("CoreGui"), {"DevConsoleMaster"})
 DestroyChildren(game:GetService("Lighting"), {})
 DestroyChildren(LocalPlayer.PlayerScripts.Scripts, {"Game"})
