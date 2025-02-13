@@ -38,3 +38,5 @@ Module.GetStats = function(Cmds, Class, ItemTable)
         end
     }) or nil
 end
+
+return Module
