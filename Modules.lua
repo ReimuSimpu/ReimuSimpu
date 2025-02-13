@@ -2,6 +2,8 @@ local Module = {}
 local Library = game.ReplicatedStorage.Library
 local Client = Library.Client
 
+local SaveMod = require(Client.Save)
+
 Module.Format = function(int)
     local index, Suffix = 1, {"", "K", "M", "B", "T"}
     while int >= 1000 and index < #Suffix do
