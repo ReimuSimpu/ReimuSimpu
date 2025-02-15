@@ -5,6 +5,7 @@ local Client = Library.Client
 local SaveMod = require(Client.Save)
 local EggCmds = require(Client.EggCmds)
 local CurrencyCmds = require(Client.CurrencyCmds)
+local InstancingCmds = require(Client.InstancingCmds)
 local Directory = require(Library.Directory)
 
 Module.Format = function(int)
@@ -42,6 +43,21 @@ Module.GetStats = function(Cmds, Class, ItemTable)
             return game:GetService("HttpService"):JSONEncode({id = ItemTable.id, sh = ItemTable.sh, pt = ItemTable.pt, tn = ItemTable.tn})
         end
     }) or nil
+end
+
+Module.GetEquippedPets = function()
+    local EquippedPets = {}
+    setidentity(2)
+    for i,v in pairs(require(Client.PetCmds).GetEquipped()) do
+        table.insert(EquippedPets, i)
+    end
+    setidentity(8)
+    return EquippedPets
+end
+
+Module.MaxBreakableDistance = function()
+    local InstanceConfig = InstancingCmds.GetInstanceConfig()
+    return InstanceConfig and InstanceConfig.MaxClickDistance or 220
 end
 
 Module.CanAffordEgg = function(Id)
