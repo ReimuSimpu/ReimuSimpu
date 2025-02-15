@@ -3,6 +3,9 @@ local Library = game.ReplicatedStorage.Library
 local Client = Library.Client
 
 local SaveMod = require(Client.Save)
+local EggCmds = require(Client.EggCmds)
+local CurrencyCmds = require(Client.CurrencyCmds)
+local Directory = require(Library.Directory)
 
 Module.Format = function(int)
     local index, Suffix = 1, {"", "K", "M", "B", "T"}
@@ -26,7 +29,7 @@ Module.GetItem = function(Class, Id)
 end
 
 Module.GetAsset = function(Id, pt)
-    local Asset = require(Library.Directory.Pets)[Id]
+    local Asset = Directory.Pets[Id]
     return string.gsub(Asset and (pt == 1 and Asset.goldenThumbnail or Asset.thumbnail) or "14976456685", "rbxassetid://", "")
 end
 
@@ -39,6 +42,17 @@ Module.GetStats = function(Cmds, Class, ItemTable)
             return game:GetService("HttpService"):JSONEncode({id = ItemTable.id, sh = ItemTable.sh, pt = ItemTable.pt, tn = ItemTable.tn})
         end
     }) or nil
+end
+
+Module.CanAffordEgg = function(Id)
+    local EggDetails = Directory.Eggs[Id]
+    if not EggDetails then return false end
+
+    setthreadidentity(2)
+    local CanHatch = CurrencyCmds.Get(EggDetails.currency) >= (require(Library.Balancing.CalcEggPricePlayer)(EggDetails) * EggCmds.GetMaxHatch())
+    setthreadidentity(8)
+
+    return CanHatch
 end
 
 return Module
