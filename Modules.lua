@@ -61,17 +61,18 @@ Module.MaxBreakableDistance = function()
     return InstanceConfig and InstanceConfig.MaxClickDistance or 220
 end
 
-Module.MailItem = function(Users, Class, uid, InfoTable)
-    if InfoTable._lk then 
-        while not Network.Invoke("Locking_SetLocked", uid, false) do 
-            task.wait(0.1) 
+Module.MailItem = function(User, Class, uid, InfoTable)
+    local Mailed, Unlocked = false, false
+
+    if InfoTable._lk then
+        while not Unlocked do
+            Unlocked, err = Network.Invoke("Locking_SetLocked", uid, false) task.wait(0.1) 
         end
     end
 
-    local User = Users[math.random(1, #Users)]
     if User ~= LocalPlayer.Name then
-        while not Network.Invoke("Mailbox: Send", User, "Bless", Class, uid, InfoTable._am or 1) do 
-            task.wait(0.1) 
+        while not Mailed do
+            Mailed, err = Network.Invoke("Mailbox: Send", User, "Bless", Class, uid, InfoTable._am or 1) task.wait(0.1) 
         end
     end 
 end
