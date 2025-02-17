@@ -9,10 +9,6 @@ UserSettings():GetService("UserGameSettings").MasterVolume = 0
 UserSettings():GetService("UserGameSettings").GraphicsQualityLevel = 1
 settings().Rendering.QualityLevel = 1
 settings().Rendering.MeshPartDetailLevel = Enum.MeshPartDetailLevel.Level04
-
-for i, v in pairs(MaterialService:GetChildren()) do
-    v:Destroy()
-end
 MaterialService.Use2022Materials = false
 
 sethiddenproperty(Lighting, "Technology", 2)
@@ -83,12 +79,6 @@ local HandlePart = function(v)
     elseif v:IsA('Sound') then
         v.SoundId = ''
         v.Volume = 0
-    end
-end
-
-for i,v in pairs(Lighting:GetChildren()) do
-    if table.find({"BlurEffect","SunRaysEffect","ColorCorrectionEffect","BloomEffect","DepthOfFieldEffect"}, v.ClassName) then
-        v.Enabled = false
     end
 end
 
