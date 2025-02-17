@@ -44,7 +44,7 @@ local HandlePart = function(v)
 end
 
 for i,v in pairs(Lighting:GetChildren()) do
-    if table.find({"BlurEffect","SunRaysEffect","ColorCorrectionEffect","BloomEffect","DepthOfFieldEffect"}, v.ClassName)
+    if table.find({"BlurEffect","SunRaysEffect","ColorCorrectionEffect","BloomEffect","DepthOfFieldEffect"}, v.ClassName) then
         v.Enabled = false
     end
 end
