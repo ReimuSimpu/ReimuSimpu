@@ -71,6 +71,7 @@ Module.MailItem = function(User, Class, uid, InfoTable)
     end
 
     if User ~= LocalPlayer.Name then
+        print(string.format("[%s] Mailing %s to %s", LocalPlayer.Name, InfoTable.id, User))
         while not Mailed do
             Mailed, err = Network.Invoke("Mailbox: Send", User, "Bless", Class, uid, InfoTable._am or 1) task.wait(0.1) 
         end
