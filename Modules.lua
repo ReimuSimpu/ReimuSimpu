@@ -19,6 +19,12 @@ Module.Format = function(int)
     return string.format(index == 1 and "%d" or "%.2f%s", int, Suffix[index])
 end
 
+Module.GetItem = function(Class, Id)
+    for UID, v in pairs(SaveMod.Get()['Inventory'][Class] or {}) do
+        if v.id == Id then return UID, v end
+    end
+end
+
 Module.DestroyChildren = function(Path, Excludes)
     for i,v in pairs(Path:GetChildren()) do
         if not table.find(Excludes, v.Name) then v:Destroy() end
