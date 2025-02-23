@@ -1,4 +1,5 @@
 local Module = {}
+local LocalPlayer = game.Players.LocalPlayer
 local Library = game.ReplicatedStorage.Library
 local Client = Library.Client
 
@@ -24,17 +25,6 @@ Module.DestroyChildren = function(Path, Excludes)
     end
 end
 
-Module.GetItem = function(Class, Id)
-    for UID, v in pairs(SaveMod.Get()['Inventory'][Class] or {}) do
-        if v.id == Id then return UID, v end
-    end
-end
-
-Module.GetAsset = function(Id, pt)
-    local Asset = Directory.Pets[Id]
-    return string.gsub(Asset and (pt == 1 and Asset.goldenThumbnail or Asset.thumbnail) or "14976456685", "rbxassetid://", "")
-end
-
 Module.GetStats = function(Cmds, Class, ItemTable)
     return Cmds.Get({
         Class = { Name = Class },
@@ -44,6 +34,17 @@ Module.GetStats = function(Cmds, Class, ItemTable)
             return game:GetService("HttpService"):JSONEncode({id = ItemTable.id, sh = ItemTable.sh, pt = ItemTable.pt, tn = ItemTable.tn})
         end
     }) or nil
+end
+
+Module.CanAffordEgg = function(Id)
+    local EggDetails = Directory.Eggs[Id]
+    if not EggDetails then return false end
+
+    setthreadidentity(2)
+    local CanHatch = CurrencyCmds.Get(EggDetails.currency) >= (require(Library.Balancing.CalcEggPricePlayer)(EggDetails) * EggCmds.GetMaxHatch())
+    setthreadidentity(8)
+
+    return CanHatch
 end
 
 Module.GetEquippedPets = function()
@@ -56,9 +57,14 @@ Module.GetEquippedPets = function()
     return EquippedPets
 end
 
-Module.MaxBreakableDistance = function()
-    local InstanceConfig = InstancingCmds.GetInstanceConfig()
-    return InstanceConfig and InstanceConfig.MaxClickDistance or 220
+Module.UseUltimate = function()
+    local UltimateCmds = require(Client.UltimateCmds)
+    local EquippedUlt = UltimateCmds.GetEquippedItem()
+    if EquippedUlt then
+        if UltimateCmds.IsCharged(EquippedUlt._data.id) then
+            UltimateCmds.Activate(EquippedUlt._data.id)
+        end
+    end
 end
 
 Module.GetBestPotion = function(Id)
@@ -71,32 +77,31 @@ Module.GetBestPotion = function(Id)
     return BestUid, Best
 end
 
-Module.MailItem = function(User, Class, uid, InfoTable)
-    local Mailed, Unlocked = false, false
-
-    if InfoTable._lk then
-        while not Unlocked do
-            Unlocked, err = Network.Invoke("Locking_SetLocked", uid, false) task.wait(0.1) 
+Module.ConsumeFruits = function(Selected)
+    local FruitCmds, Fruits = require(Client.FruitCmds), {}
+    for i, v in pairs(SaveMod.Get()['Inventory']['Fruit'] or {}) do
+        local MaxEat = FruitCmds.GetMaxConsume(i)
+        if table.find(Selected, v.id) and MaxEat > 0 and MaxEat < (v._am or 1) then
+            if not Fruits[v.id] or v.sh then   
+                Fruits[v.id] = {uuid = i, info = v, eat = MaxEat}
+            end
         end
     end
-
-    if User ~= LocalPlayer.Name then
-        print(string.format("[%s] Mailing %s to %s", LocalPlayer.Name, InfoTable.id, User))
-        while not Mailed do
-            Mailed, err = Network.Invoke("Mailbox: Send", User, "Bless", Class, uid, InfoTable._am or 1) task.wait(0.1) 
-        end
-    end 
+    for i, v in pairs(Fruits) do
+        Network.Fire("Fruits: Consume", v.uuid, v.eat)
+        print(string.format("[%s] Ate Fruit: %s (%sx)", LocalPlayer.Name, i, v.eat)) task.wait(.5)
+    end
 end
 
-Module.CanAffordEgg = function(Id)
-    local EggDetails = Directory.Eggs[Id]
-    if not EggDetails then return false end
-
-    setthreadidentity(2)
-    local CanHatch = CurrencyCmds.Get(EggDetails.currency) >= (require(Library.Balancing.CalcEggPricePlayer)(EggDetails) * EggCmds.GetMaxHatch())
-    setthreadidentity(8)
-
-    return CanHatch
+Module.DrinkPotions = function(Potions)
+    for i,Id in pairs(Potions) do
+        local Enabled, Tier, Time = require(Client.PotionCmds).Has(Id)
+        local UID, Data = Module.GetBestPotion(Id)
+        if UID and (not Enabled or Data.tn > Tier) then
+            Network.Fire("Potions: Consume", UID, 1) 
+            print(string.format("[%s] Drank Potion: %s %s", LocalPlayer.Name, Id, Data.tn)) task.wait(.5)
+        end
+    end
 end
 
 return Module
