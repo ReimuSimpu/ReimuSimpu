@@ -62,9 +62,9 @@ Module.MaxBreakableDistance = function()
 end
 
 Module.GetBestPotion = function(Id)
-    local BestUid, Best = nil, nil
-    for i, v in pairs(SaveMod.Get().Inventory.Potions or {}) do
-        if v.id == Id and (not Best or v.tn > Best.tn) then
+    local BestUid, Best = nil, {tn = 0}
+    for i, v in pairs(SaveMod.Get().Inventory.Potion or {}) do
+        if v.id == Id and v.tn > Best.tn then
             BestUid, Best = i, v
         end
     end
