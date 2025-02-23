@@ -61,6 +61,16 @@ Module.MaxBreakableDistance = function()
     return InstanceConfig and InstanceConfig.MaxClickDistance or 220
 end
 
+Module.GetBestPotion = function(Id)
+    local BestUid, Best = nil, nil
+    for i, v in pairs(Savemod.Get().Inventory.Potions or {}) do
+        if v.id == Id and (not Best or v.tn > Best.tn) then
+            BestUid, Best = i, v
+        end
+    end
+    return BestUid, Best
+end
+
 Module.MailItem = function(User, Class, uid, InfoTable)
     local Mailed, Unlocked = false, false
 
