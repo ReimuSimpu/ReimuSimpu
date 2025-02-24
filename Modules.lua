@@ -2,6 +2,7 @@ local Module = {}
 local LocalPlayer = game.Players.LocalPlayer
 local Library = game.ReplicatedStorage.Library
 local Client = Library.Client
+local Directory = require(Library.Directory)
 
 local SaveMod = require(Client.Save)
 local Network = require(Client.Network)
@@ -9,6 +10,11 @@ local EggCmds = require(Client.EggCmds)
 local CurrencyCmds = require(Client.CurrencyCmds)
 local InstancingCmds = require(Client.InstancingCmds)
 local Directory = require(Library.Directory)
+
+local SpecialClassCases, DirClassesTable = {Card = "CardItems", Lootbox = "Lootboxes", Box = "Boxes", Misc = "MiscItems"}, {}
+for Class, _ in pairs(require(Library.Items.Types).Types) do 
+    DirClassesTable[Class] = SpecialClassCases[Class] or Class .. "s" 
+end
 
 Module.Format = function(int)
     local index, Suffix = 1, {"", "K", "M", "B", "T"}
@@ -26,7 +32,7 @@ Module.GetItem = function(Class, Id)
 end
 
 Module.GetAssetId = function(Class, Info)
-    local Directory = require(Library.Directory)
+    local Class = DirClassesTable[Class]
     local ItemTable = Directory[Class][Info.id]
     local Icon = nil
     if Info.tn then
@@ -126,5 +132,3 @@ Module.DrinkPotions = function(Potions)
         end
     end
 end
-
-return Module
