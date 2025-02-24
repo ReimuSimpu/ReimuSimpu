@@ -132,3 +132,5 @@ Module.DrinkPotions = function(Potions)
         end
     end
 end
+
+return Module
