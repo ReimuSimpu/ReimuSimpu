@@ -25,6 +25,23 @@ Module.GetItem = function(Class, Id)
     end
 end
 
+Module.GetAssetId = function(Class, Info)
+    local Directory = require(Library.Directory)
+    local ItemTable = Directory[Class][Info.id]
+    local Icon = nil
+    if Info.tn then
+        if ItemTable.Icon and type(ItemTable.Icon) == "function" then
+            Icon = unpack(getupvalues(ItemTable.Icon))[Info.tn]
+        elseif ItemTable.Tiers and ItemTable.Tiers[1] and ItemTable.Tiers[1].Effect then
+            local EffectType = ItemTable.Tiers[1].Effect.Type
+            Icon = EffectType and EffectType.Tiers and EffectType.Tiers[Info.tn].Icon
+        end        
+    end
+
+    Icon = Icon or ItemTable.Icon or ItemTable.icon or ItemTable.thumbnail or "rbxassetid://0"
+    return Icon
+end
+
 Module.DestroyChildren = function(Path, Excludes)
     for i,v in pairs(Path:GetChildren()) do
         if not table.find(Excludes, v.Name) then v:Destroy() end
