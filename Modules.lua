@@ -16,6 +16,19 @@ for Class, _ in pairs(require(Library.Items.Types).Types) do
     DirClassesTable[Class] = SpecialClassCases[Class] or Class .. "s" 
 end
 
+Module.AntiAfk = function()
+    local VirtualUser = game:GetService("VirtualUser")
+
+    for i,v in pairs(getconnections(LocalPlayer.Idled)) do 
+        v:Disable() 
+    end
+    
+    LocalPlayer.Idled:Connect(function() 
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new(math.random(0, 1000), math.random(0, 1000))) 
+    end)
+end
+
 Module.Format = function(int)
     local index, Suffix = 1, {"", "K", "M", "B", "T"}
     while int >= 1000 and index < #Suffix do
