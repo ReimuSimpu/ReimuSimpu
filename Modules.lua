@@ -29,6 +29,10 @@ Module.AntiAfk = function()
     end)
 end
 
+Module.RandomizeTeleport = function(Area) 
+    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Area.X + math.random(-25, 25), Area.Y, Area.Z + math.random(-25, 25)) * CFrame.Angles(0, math.rad(math.random(0, 360)), 0) 
+end
+
 Module.Format = function(int)
     local index, Suffix = 1, {"", "K", "M", "B", "T"}
     while int >= 1000 and index < #Suffix do
