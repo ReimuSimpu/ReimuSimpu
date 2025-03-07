@@ -139,6 +139,12 @@ Module.ConsumeFruits = function(Selected)
     end
 end
 
+Module.CheckForStaff = function(v)
+    if v:IsInGroup(5060810) then
+        LocalPlayer:Kick(string.format("\n[ANTI-STAFF] %s (%s)", v.Name, v.DisplayName))
+    end
+end
+
 Module.DrinkPotions = function(Potions)
     for i,Id in pairs(Potions) do
         local Enabled, Tier, Time = require(Client.PotionCmds).Has(Id)
