@@ -82,12 +82,12 @@ Module.GetStats = function(Cmds, Class, ItemTable)
     }) or nil
 end
 
-Module.CanAffordEgg = function(Id)
+Module.CanAffordEgg = function(Id, Amount)
     local EggDetails = Directory.Eggs[Id]
     if not EggDetails then return false end
 
     setthreadidentity(2)
-    local CanHatch = CurrencyCmds.Get(EggDetails.currency) >= (require(Library.Balancing.CalcEggPricePlayer)(EggDetails) * EggCmds.GetMaxHatch())
+    local CanHatch = CurrencyCmds.Get(EggDetails.currency) >= (require(Library.Balancing.CalcEggPricePlayer)(EggDetails) * Amount)
     setthreadidentity(8)
 
     return CanHatch
