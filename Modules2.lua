@@ -14,6 +14,7 @@ local Client = Library.Client
 local Directory = require(Library.Directory)
 local SaveMod = require(Client.Save)
 local Network = require(Client.Network)
+local MasteryCmds = require(Client.MasteryCmds)
 
 -- Special Class Cases
 local SpecialClassCases = {
@@ -46,8 +47,10 @@ Module.GetBestTier = function(Class, Id)
     local UUID = nil
 
     local Inventory = Savemod.Get().Inventory[Class] or {}
+
     for i, v in pairs(Inventory) do
-        if v.id == Id and v.tn > Item.tn then
+        local CanUse = (Class ~= "Enchant") or MasteryCmds.CanUseEnchant(v.tn)
+        if v.id == Id and v.tn > Item.tn and CanUse then
             UUID, Item = i, v
         end
     end
