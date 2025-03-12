@@ -12,7 +12,7 @@ local Library = ReplicatedStorage.Library
 local Client = Library.Client
 
 local Directory = require(Library.Directory)
-local SaveMod = require(Client.Save)
+local Savemod = require(Client.Save)
 local Network = require(Client.Network)
 local MasteryCmds = require(Client.MasteryCmds)
 
@@ -32,7 +32,7 @@ end
 
 -- Module Functions
 Modules.GetItem = function(Class, Id)
-    local Inventory = SaveMod.Get().Inventory[Class]
+    local Inventory = Savemod.Get().Inventory[Class]
     if not Inventory then return end
 
     for UID, ItemInfo in pairs(Inventory) do
