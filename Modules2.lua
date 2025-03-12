@@ -41,6 +41,19 @@ Modules.GetItem = function(Class, Id)
     end
 end
 
+Module.GetBestTier = function(Class, Id)
+    local Item = { tn = 0 }
+    local UUID = nil
+
+    local Inventory = Savemod.Get().Inventory[Class] or {}
+    for i, v in pairs(Inventory) do
+        if v.id == Id and v.tn > Item.tn then
+            UUID, Item = i, v
+        end
+    end
+    return UUID, Item
+end
+
 Modules.CraftGift = function(Event, Item)
     local UID, Info = Modules.GetItem("Misc", Item)
     if not UID or not Info or Info._am < 10 then return end
