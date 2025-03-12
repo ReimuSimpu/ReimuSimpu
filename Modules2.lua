@@ -42,7 +42,7 @@ Modules.GetItem = function(Class, Id)
     end
 end
 
-Module.GetBestTier = function(Class, Id)
+Modules.GetBestTier = function(Class, Id)
     local Item = { tn = 0 }
     local UUID = nil
 
