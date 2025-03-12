@@ -147,7 +147,7 @@ Modules.DestroyChildren = function(Instance, ExcludeList)
 
     for _, Child in ipairs(Instance:GetChildren()) do
         if not ExcludeSet[Child.Name] then
-            Child:Destroy()
+            pcall(function() Child:Destroy() end)
         end
     end
 end
