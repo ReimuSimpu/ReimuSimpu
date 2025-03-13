@@ -59,8 +59,9 @@ end
 
 Modules.CraftGift = function(Event, Item)
     local UID, Info = Modules.GetItem("Misc", Item)
-    if not UID or not Info or Info._am < 10 then return end
-
+    if not UID or not Info or (Info._am or 1) < 10 then 
+        return 
+    end
     local CraftedAmount = math.floor(Info._am / 10)
     if Network.Invoke(Event, Info._am) then
         print(string.format("[%s] Crafted Gifts: %d (%d %s)", LocalPlayer.Name, CraftedAmount, Info._am, Item))
