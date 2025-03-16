@@ -15,6 +15,7 @@ local Directory = require(Library.Directory)
 local Savemod = require(Client.Save)
 local Network = require(Client.Network)
 local MasteryCmds = require(Client.MasteryCmds)
+local Items = require(Library.Items)
 
 -- Special Class Cases
 local SpecialClassCases = {
@@ -28,6 +29,12 @@ local SpecialClassCases = {
 local DirClassesTable = {}
 for Class, _ in pairs(require(Library.Items.Types).Types) do
     DirClassesTable[Class] = SpecialClassCases[Class] or Class .. "s"
+end
+
+-- Use Item Library Function
+Modules.LibraryItem = function(Class, Item, Func)
+    local ItemInstance = Items[Class](Item)
+    return ItemInstance[Func](ItemInstance)
 end
 
 -- Module Functions
