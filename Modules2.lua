@@ -168,8 +168,14 @@ Modules.TimeToString = function(Int)
     return string.format("%02d:%02d:%02d", Hours, Minutes, Seconds)
 end
 
-Modules.Format = function(Int)
-    local Suffix = { "", "K", "M", "B", "T" }
+Modules.Format = function(Int) -- AI CODE ( idgaf about a format )
+    local Suffix = {
+        "", "K", "M", "B", "T",   -- Thousand, Million, Billion, Trillion
+        "Qa", "Qi", "Sx", "Sp", "Oc", "No",   -- Quadrillion to Nonillion
+        "Dc", "UDc", "DDc", "TDc", "QaDc", "QiDc", "SxDc", "SpDc", "OcDc", "NoDc",  -- Decillion to Nonadecillion
+        "Vg" -- Vigintillion (10^63)
+    }
+
     local Index = 1
 
     if Int < 1000 then
