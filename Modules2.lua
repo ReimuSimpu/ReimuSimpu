@@ -169,6 +169,7 @@ Modules.TimeToString = function(Int)
 end
 
 Modules.Format = function(Int) -- AI CODE ( idgaf about a format )
+    local Int = Int or 0
     local Suffix = {
         "", "K", "M", "B", "T",   -- Thousand, Million, Billion, Trillion
         "Qa", "Qi", "Sx", "Sp", "Oc", "No",   -- Quadrillion to Nonillion
