@@ -1,3 +1,9 @@
+-- THIS IS ORIGINALLY MY OWN CODE WITH AI "OPTAMIZATIONS"
+-- THIS IS ORIGINALLY MY OWN CODE WITH AI "OPTAMIZATIONS"
+-- THIS IS ORIGINALLY MY OWN CODE WITH AI "OPTAMIZATIONS"
+-- THIS IS ORIGINALLY MY OWN CODE WITH AI "OPTAMIZATIONS"
+-- THIS IS ORIGINALLY MY OWN CODE WITH AI "OPTAMIZATIONS"
+
 local Modules = {}
 
 -- Services
@@ -11,13 +17,15 @@ local LocalPlayer = Players.LocalPlayer
 local Library = ReplicatedStorage.Library
 local Client = Library.Client
 
+-- Cached requires
 local Directory = require(Library.Directory)
 local Savemod = require(Client.Save)
 local Network = require(Client.Network)
 local MasteryCmds = require(Client.MasteryCmds)
 local Items = require(Library.Items)
+local ItemTypes = require(Library.Items.Types).Types
 
--- Special Class Cases
+-- Predefined tables
 local SpecialClassCases = {
     Card = "CardItems",
     Lootbox = "Lootboxes",
@@ -25,20 +33,30 @@ local SpecialClassCases = {
     Misc = "MiscItems"
 }
 
--- Build DirClassesTable
+-- Build DirClassesTable once
 local DirClassesTable = {}
-for Class, _ in pairs(require(Library.Items.Types).Types) do
+for Class in pairs(ItemTypes) do
     DirClassesTable[Class] = SpecialClassCases[Class] or Class .. "s"
 end
 
--- Use Item Library Function
-Modules.LibraryItem = function(Class, Item, Func)
+-- Cache frequently used functions
+local math_floor = math.floor
+local math_random = math.random
+local string_format = string.format
+local table_insert = table.insert
+local pairs = pairs
+local ipairs = ipairs
+local pcall = pcall
+local tonumber = tonumber
+local tostring = tostring
+
+-- Module Functions
+function Modules.LibraryItem(Class, Item, Func)
     local ItemInstance = Items[Class](Item)
     return ItemInstance[Func](ItemInstance)
 end
 
--- Module Functions
-Modules.GetItem = function(Class, Id)
+function Modules.GetItem(Class, Id)
     local Inventory = Savemod.Get().Inventory[Class]
     if not Inventory then return end
 
@@ -49,49 +67,50 @@ Modules.GetItem = function(Class, Id)
     end
 end
 
-Modules.GetStartTime = function(Folder)
+function Modules.GetStartTime(Folder)
     local File = Folder .. "/" .. LocalPlayer.Name .. ".json"
+    
     if not isfolder(Folder) then
         makefolder(Folder)
-        print(string.format("[%s] Created Folder: %s", LocalPlayer.Name, Folder))
+        print(string_format("[%s] Created Folder: %s", LocalPlayer.Name, Folder))
     end
     
     if not isfile(File) then
         writefile(File, tostring(os.clock()))
-        print(string.format("[%s] Created File: %s", LocalPlayer.Name, File))
+        print(string_format("[%s] Created File: %s", LocalPlayer.Name, File))
+        return 0
     end
 
     local Success, StoredTime = pcall(readfile, File)
     return Success and tonumber(StoredTime) or 0
 end
 
-Modules.GetBestTier = function(Class, Id)
-    local Item = { tn = 0 }
-    local UUID = nil
-
+function Modules.GetBestTier(Class, Id)
+    local BestItem = { tn = 0 }
+    local BestUUID = nil
     local Inventory = Savemod.Get().Inventory[Class] or {}
 
-    for i, v in pairs(Inventory) do
-        local CanUse = (Class ~= "Enchant") or MasteryCmds.CanUseEnchant(v.tn)
-        if v.id == Id and v.tn > Item.tn and CanUse then
-            UUID, Item = i, v
+    for UID, ItemInfo in pairs(Inventory) do
+        local CanUse = (Class ~= "Enchant") or MasteryCmds.CanUseEnchant(ItemInfo.tn)
+        if ItemInfo.id == Id and ItemInfo.tn > BestItem.tn and CanUse then
+            BestUUID, BestItem = UID, ItemInfo
         end
     end
-    return UUID, Item
+    
+    return BestUUID, BestItem
 end
 
-Modules.CraftGift = function(Event, Item)
+function Modules.CraftGift(Event, Item)
     local UID, Info = Modules.GetItem("Misc", Item)
-    if not UID or not Info or (Info._am or 1) < 10 then 
-        return 
-    end
-    local CraftedAmount = math.floor(Info._am / 10)
+    if not UID or not Info or (Info._am or 1) < 10 then return end
+    
+    local CraftedAmount = math_floor(Info._am / 10)
     if Network.Invoke(Event, Info._am) then
-        print(string.format("[%s] Crafted Gifts: %d (%d %s)", LocalPlayer.Name, CraftedAmount, Info._am, Item))
+        print(string_format("[%s] Crafted Gifts: %d (%d %s)", LocalPlayer.Name, CraftedAmount, Info._am, Item))
     end
 end
 
-Modules.GetStats = function(Cmds, Class, ItemTable)
+function Modules.GetStats(Cmds, Class, ItemTable)
     if not Cmds or not Cmds.Get or type(Cmds.Get) ~= "function" then
         return 0
     end
@@ -117,53 +136,56 @@ Modules.GetStats = function(Cmds, Class, ItemTable)
     return Cmds.Get(RequestObject) or 0
 end
 
-Modules.GetAssetId = function(Class, Info)
+function Modules.GetAssetId(Class, Info)
     local ClassTable = DirClassesTable[Class]
     if not ClassTable then return "rbxassetid://0" end
 
     local ItemTable = Directory[ClassTable][Info.id]
     if not ItemTable then return "rbxassetid://0" end
 
-    local Icon
-    if Info.tn then
-        if ItemTable.Icon and type(ItemTable.Icon) == "function" then
-            local Upvalues = getupvalues(ItemTable.Icon)
-            if Upvalues and Upvalues[1] then
-                Icon = Upvalues[1][Info.tn]
-            end
-        elseif ItemTable.Tiers and ItemTable.Tiers[1] and ItemTable.Tiers[1].Effect then
-            local EffectType = ItemTable.Tiers[1].Effect.Type
-            if EffectType and EffectType.Tiers and EffectType.Tiers[Info.tn] then
-                Icon = EffectType.Tiers[Info.tn].Icon
-            end
+    if not Info.tn then
+        return ItemTable.Icon or ItemTable.icon or ItemTable.thumbnail or "rbxassetid://0"
+    end
+
+    if ItemTable.Icon and type(ItemTable.Icon) == "function" then
+        local Upvalues = debug.getupvalue(ItemTable.Icon, 1)
+        if Upvalues and Upvalues[Info.tn] then
+            return Upvalues[Info.tn]
+        end
+    elseif ItemTable.Tiers and ItemTable.Tiers[1] and ItemTable.Tiers[1].Effect then
+        local EffectType = ItemTable.Tiers[1].Effect.Type
+        if EffectType and EffectType.Tiers and EffectType.Tiers[Info.tn] then
+            return EffectType.Tiers[Info.tn].Icon or "rbxassetid://0"
         end
     end
 
-    return Icon or ItemTable.Icon or ItemTable.icon or ItemTable.thumbnail or "rbxassetid://0"
+    return ItemTable.Icon or ItemTable.icon or ItemTable.thumbnail or "rbxassetid://0"
 end
 
-Modules.AntiAfk = function()
-    for _, Connection in pairs(getconnections(LocalPlayer.Idled)) do
+function Modules.AntiAfk()
+    for _, Connection in ipairs(getconnections(LocalPlayer.Idled)) do
         Connection:Disable()
     end
 
     LocalPlayer.Idled:Connect(function()
         VirtualUser:CaptureController()
-        VirtualUser:ClickButton2(Vector2.new(math.random(0, 1000), math.random(0, 1000)))
+        VirtualUser:ClickButton2(Vector2.new(math_random(0, 1000), math_random(0, 1000)))
     end)
 end
 
-Modules.RandomizeTeleport = function(Area, Range)
-    Range = Range or math.random(1, 25)
+function Modules.RandomizeTeleport(Area, Range)
+    Range = Range or math_random(1, 25)
+    local RandomX = Area.X + math_random(-Range, Range)
+    local RandomZ = Area.Z + math_random(-Range, Range)
+    local RandomAngle = math.rad(math_random(0, 360))
 
-    local RandomX = Area.X + math.random(-Range, Range)
-    local RandomZ = Area.Z + math.random(-Range, Range)
-    local RandomAngle = math.rad(math.random(0, 360))
-
-    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(RandomX, Area.Y, RandomZ) * CFrame.Angles(0, RandomAngle, 0)
+    local HumanoidRootPart = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if HumanoidRootPart then
+        HumanoidRootPart.CFrame = CFrame.new(RandomX, Area.Y, RandomZ) * CFrame.Angles(0, RandomAngle, 0)
+    end
 end
 
-Modules.DestroyChildren = function(Instance, ExcludeList)
+function Modules.DestroyChildren(Instance, ExcludeList)
     local ExcludeSet = {}
     for _, Name in ipairs(ExcludeList) do
         ExcludeSet[Name] = true
@@ -171,40 +193,38 @@ Modules.DestroyChildren = function(Instance, ExcludeList)
 
     for _, Child in ipairs(Instance:GetChildren()) do
         if not ExcludeSet[Child.Name] then
-            pcall(function() Child:Destroy() end)
+            pcall(Child.Destroy, Child)
         end
     end
 end
 
-Modules.TimeToString = function(Int)
-    local Hours = math.floor(Int / 3600)
-    local Minutes = math.floor((Int % 3600) / 60)
-    local Seconds = math.floor(Int % 60)
+function Modules.TimeToString(Int)
+    local Hours = math_floor(Int / 3600)
+    local Minutes = math_floor((Int % 3600) / 60)
+    local Seconds = math_floor(Int % 60)
 
-    return string.format("%02d:%02d:%02d", Hours, Minutes, Seconds)
+    return string_format("%02d:%02d:%02d", Hours, Minutes, Seconds)
 end
 
-Modules.Format = function(Int) -- AI CODE ( idgaf about a format )
-    local Int = Int or 0
-    local Suffix = {
-        "", "K", "M", "B", "T",   -- Thousand, Million, Billion, Trillion
-        "Qa", "Qi", "Sx", "Sp", "Oc", "No",   -- Quadrillion to Nonillion
-        "Dc", "UDc", "DDc", "TDc", "QaDc", "QiDc", "SxDc", "SpDc", "OcDc", "NoDc",  -- Decillion to Nonadecillion
-        "Vg" -- Vigintillion (10^63)
+function Modules.Format(Int)
+    Int = Int or 0
+    if Int < 1000 then return tostring(Int) end
+
+    local Suffixes = {
+        "K", "M", "B", "T",                   -- Thousand, Million, Billion, Trillion
+        "Qa", "Qi", "Sx", "Sp", "Oc", "No",    -- Quadrillion to Nonillion
+        "Dc", "UDc", "DDc", "TDc", "QaDc",     -- Decillion to Quattuordecillion
+        "QiDc", "SxDc", "SpDc", "OcDc", "NoDc", -- Quindecillion to Novemdecillion
+        "Vg"                                   -- Vigintillion
     }
 
     local Index = 1
-
-    if Int < 1000 then
-        return string.format("%d", Int)
-    end
-
-    while Int >= 1000 and Index < #Suffix do
+    while Int >= 1000 and Index < #Suffixes do
         Int = Int / 1000
         Index = Index + 1
     end
 
-    return string.format("%.2f%s", Int, Suffix[Index])
+    return string_format("%.2f%s", Int, Suffixes[Index])
 end
 
 return Modules
