@@ -67,6 +67,17 @@ function Modules.GetItem(Class, Id)
     end
 end
 
+Modules.ChangeSettings = function(Desired) 
+	local SaveData = Savemod.Get()
+	for i,v in pairs(Desired) do
+		if SaveData['Settings'][i] ~= v then
+			if Network.Invoke("Toggle Setting", i,v) then
+				print(string.format("[%s] Changed Settings %s to %s from %s", LocalPlayer.Name, i, v, SaveData['Settings'][i]))
+			end
+		end
+	end
+end
+
 function Modules.GetStartTime(Folder)
     local File = Folder .. "/" .. LocalPlayer.Name .. ".json"
     
