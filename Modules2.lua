@@ -49,6 +49,22 @@ Modules.GetItem = function(Class, Id)
     end
 end
 
+Modules.GetStartTime = function(Folder)
+    local File = Folder .. "/" .. LocalPlayer.Name .. ".json"
+    if not isfolder(Folder) then
+        makefolder(Folder)
+        print(string.format("[%s] Created Folder: %s", LocalPlayer.Name, Folder))
+    end
+    
+    if not isfile(File) then
+        writefile(File, tostring(os.clock()))
+        print(string.format("[%s] Created File: %s", LocalPlayer.Name, File))
+    end
+
+    local Success, StoredTime = pcall(readfile, File)
+    return Success and tonumber(StoredTime) or 0
+end
+
 Modules.GetBestTier = function(Class, Id)
     local Item = { tn = 0 }
     local UUID = nil
