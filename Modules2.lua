@@ -102,7 +102,7 @@ function Modules.GetBestTier(Class, Id)
     local Inventory = Savemod.Get().Inventory[Class] or {}
 
     for UID, ItemInfo in pairs(Inventory) do
-        local CanUse = (Class ~= "Enchant") or MasteryCmds.CanUseEnchant(ItemInfo.tn)
+        local CanUse = (Class == "Enchant" or MasteryCmds.CanUseEnchant(ItemInfo.tn)) or (Class == "Potion" or MasteryCmds.CanUsePotion(ItemInfo.tn)) or true
         if ItemInfo.id == Id and ItemInfo.tn > BestItem.tn and CanUse then
             BestUUID, BestItem = UID, ItemInfo
         end
