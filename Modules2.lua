@@ -121,6 +121,11 @@ function Modules.CraftGift(Event, Item)
     end
 end
 
+Modules.GetPlayerImg = function(Type)
+	local URL = string.format("https://thumbnails.roblox.com/v1/users/%s?userIds=%s&size=420x420&format=Png&isCircular=false", Type, LocalPlayer.UserId)
+	return game.HttpService:JSONDecode(game:HttpGet(URL)).data[1].imageUrl
+end
+
 function Modules.GetStats(Cmds, Class, ItemTable)
     if not Cmds or not Cmds.Get or type(Cmds.Get) ~= "function" then
         return 0
