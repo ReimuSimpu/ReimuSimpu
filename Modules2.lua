@@ -87,7 +87,7 @@ function Modules.GetStartTime(Folder)
     end
     
     if not isfile(File) then
-        writefile(File, tostring(os.clock()))
+        writefile(File, tostring(os.time()))
         print(string_format("[%s] Created File: %s", LocalPlayer.Name, File))
         return 0
     end
