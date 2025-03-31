@@ -226,7 +226,7 @@ function Modules.MergeDefaults(User, Default)
     if type(User) ~= "table" then return Default end
     for i,v in pairs(Default) do
         if type(v) == "table" then
-            User[i] = MergeDefaults(User[i] or {}, v)
+            User[i] = Modules.MergeDefaults(User[i] or {}, v)
         elseif User[i] == nil then
             User[i] = v
         end
