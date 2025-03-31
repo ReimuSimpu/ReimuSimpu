@@ -222,6 +222,18 @@ function Modules.TimeToString(Int)
     return string_format("%02d:%02d:%02d", Hours, Minutes, Seconds)
 end
 
+function Modules.MergeDefaults(User, Default)
+    if type(User) ~= "table" then return Default end
+    for i,v in pairs(Default) do
+        if type(v) == "table" then
+            User[i] = MergeDefaults(User[i] or {}, v)
+        elseif User[i] == nil then
+            User[i] = v
+        end
+    end
+    return User
+end
+
 function Modules.Format(Int)
     Int = Int or 0
     if Int < 1000 then return tostring(Int) end
